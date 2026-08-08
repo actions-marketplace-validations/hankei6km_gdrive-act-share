@@ -1,5 +1,6 @@
+import { describe, it, beforeEach, after } from 'node:test'
+import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { jest } from '@jest/globals'
 import * as process from 'process'
 import * as cp from 'child_process'
 import * as path from 'path'
@@ -42,7 +43,7 @@ beforeEach(() => {
     saveInputs.sendNotificationEmail
   process.env['INPUT_EMAIL_MESSAGE'] = saveInputs.emailMessage
 })
-afterAll(() => {
+after(() => {
   process.env['INPUT_FILE_ID'] = saveInputs.fileId
   process.env['INPUT_PARENT_ID'] = saveInputs.parentId
   process.env['INPUT_DEST_FILE_NAME'] = saveInputs.destFileName
@@ -79,8 +80,8 @@ describe('index', () => {
         resolve([stdout.toString(), stderr.toString()])
       })
     })
-    expect(stdout).toMatch(/\:\:error\:\:type\: the input is invalid \:/)
-    expect(stderr).toEqual('')
+    assert.match(stdout, /\:\:error\:\:type\: the input is invalid \:/)
+    assert.strictEqual(stderr, '')
   })
 
   it('should print error message(role = blank)', async () => {
@@ -102,7 +103,7 @@ describe('index', () => {
         resolve([stdout.toString(), stderr.toString()])
       })
     })
-    expect(stdout).toMatch(/\:\:error\:\:role\: the input is invalid \:/)
-    expect(stderr).toEqual('')
+    assert.match(stdout, /\:\:error\:\:role\: the input is invalid \:/)
+    assert.strictEqual(stderr, '')
   })
 })
